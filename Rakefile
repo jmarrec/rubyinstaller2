@@ -118,7 +118,7 @@ namespace "release" do
       RubyInstaller::Build.enable_msys_apps
 
       sh "#{ENV['RI_DEVKIT']}/usr/bin/mkdir -p %USERPROFILE%/.gnupg"
-      sh "gpg --batch --passphrase %GPGPASSWD% --decrypt appveyor-key.asc.asc | gpg --import"
+      sh "gpg --batch --passphrase %GPGPASSWD% --decrypt julien-marrec-key.asc.asc | gpg --import"
       sh "#{ENV['RI_DEVKIT']}/usr/bin/mkdir artifacts"
       sh "cp", "-v", *files, "artifacts/"
       sh "ls artifacts/* | xargs -n1 gpg --verbose --detach-sign --armor"
