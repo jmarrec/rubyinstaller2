@@ -38,7 +38,7 @@ jobs:
         git config --system core.autocrlf false
         git config --system core.eol lf
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
     # Work around issue https://github.com/actions/checkout/issues/290
     - name: fetch tag annotations
