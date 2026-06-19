@@ -175,7 +175,6 @@ jobs:
       run: ridk install 1 3
 
     - name: create MSYS2 home dir for ruby-spec
-      if: matrix.arch != 'arm-ucrt'
       shell: cmd
       run: ridk exec sh -c "mkdir -pv ~"
 
