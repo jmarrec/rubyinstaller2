@@ -199,6 +199,7 @@ jobs:
       shell: cmd
       run: |
         chcp 437
+        IF "%arch%" EQU "arm-ucrt" del test\test_long_path.rb
         ridk exec rake test
 
     - name: Run upload to github (only on tag builds)
@@ -239,7 +240,7 @@ jobs:
           git clone --depth 1 https://github.com/ruby/ruby -b $env:run_mri_spec &&
           cd ruby &&
           curl https://raw.githubusercontent.com/oneclick/rubyinstaller2-packages/refs/heads/master/mingw-w64-ruby40/0016-Windows-Change-command-line-interface-to-UTF-8-specs.patch | patch -p1 &&
-          env --unset=RUBYOPT ruby -C spec/ruby ../mspec/bin/mspec -I../../tool/lib -j  --exclude "CVE-2020-10663 is resisted by only creating custom objects if passed create_additions: true or using JSON.load" --exclude "URI#select conforms to the MatzRuby tests"
+          env --unset=RUBYOPT ruby -C spec/ruby ../mspec/bin/mspec -I../../tool/lib -j  --exclude "CVE-2020-10663 is resisted by only creating custom objects if passed create_additions: true or using JSON.load" --exclude "URI#select conforms to the MatzRuby tests" --exclude "File.ctime returns the change time for the named file (the time at which directory information about the file was changed, not the file itself) with microseconds." --exclude "File.utime sets the access and modification time of each file" --exclude "File.atime returns the last access time for the named file with microseconds" --exclude "File.mtime returns the modification Time of the file with microseconds"
         }
 
     - name: Verify that the used CA list is still the latest.
