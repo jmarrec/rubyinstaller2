@@ -141,6 +141,30 @@ if package.rubyver2 >= "3.4" || package.arch == "arm-ucrt"
     end
   end
 
+  ###########################################################################
+  # Add long path awareness to ruby.exe / rubyw.exe
+  ###########################################################################
+
+  self.sandboxfiles.select do |destpath|
+    destpath =~ /\/rubyw?\.exe$/i
+  end.each do |destpath|
+
+    file destpath => [destpath.sub(sandboxdir, unpackdirmgw), bin_dir] do |t|
+      puts "patching manifest of #{t.name}"
+
+      # The XML elements we want to add to the default MINGW manifest:
+      new = <<~EOT
+        <application xmlns="urn:schemas-microsoft-com:asm.v3">
+          <windowsSettings xmlns:ws2="http://schemas.microsoft.com/SMI/2016/WindowsSettings">
+            <ws2:longPathAware>true</ws2:longPathAware>
+          </windowsSettings>
+        </application>
+      EOT
+
+      ManifestUpdater.update_file(t.prerequisites.first, new, t.name)
+    end
+  end
+
   # Add a detached manifest file within the sub directory that lists all DLLs in question
   manifest2 = File.join(sandboxdir, "bin/ruby_builtin_dlls/ruby_builtin_dlls.manifest")
   file manifest2 => [dlls_dir] do |t|
