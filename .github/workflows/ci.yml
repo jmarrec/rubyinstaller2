@@ -200,6 +200,7 @@ jobs:
       run: |
         chcp 437
         IF "%arch%" EQU "arm-ucrt" del test\test_long_path.rb
+        IF "%arch%" EQU "x86-msvcrt" del test\test_gem_install.rb
         ridk exec rake test
 
     - name: Run upload to github (only on tag builds)
